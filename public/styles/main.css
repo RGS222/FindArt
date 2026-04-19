@@ -1,0 +1,11 @@
+body {
+    background-image: url('images/background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    /* Centers the image */
+    background-size: auto 100%;
+    /* match height crop width */
+    margin: 0;
+    padding: 40px;
+    width: 100vw;
+}
