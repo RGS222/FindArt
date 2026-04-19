@@ -1,0 +1,23 @@
+<section id="input">
+    <form class="form" autocomplete="off" method="GET" action="/arts">
+
+        <div class="form-elements">
+
+            <label for="department">Category: </label>
+            <select name="department" id="department">
+                <% for (let i = 0; i < categories.length; i++) { %>
+                <option value="<%= categories[i].departmentId %>"><%= categories[i].displayName %></option>
+                <% } %>
+            </select>
+
+            <label for="search">Search: </label>
+            <input id="search" name="search" 
+                placeholder="Any"
+                value="" />
+
+            <button type="submit" class="btn btn-warning">
+                Show
+            </button>
+        </div>
+    </form>
+</section>

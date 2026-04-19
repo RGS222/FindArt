@@ -9,5 +9,15 @@
 </head>
 <body>
     
+<section id="main">
+    <% if (locals.categories) { %>
+        <%- include("partials/input.ejs") %>
+    <% } else if (locals.imageSrc) { %>
+        <%- include("partials/display.ejs") %>
+    <% } else { %>
+        <div>Something has gone wrong.</div>
+    <% } %>
+</section>
+
 </body>
 </html>

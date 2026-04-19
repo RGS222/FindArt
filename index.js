@@ -4,16 +4,62 @@ import axios from "axios";
 const app = express();
 const port = 3000;
 const API_URL = "https://collectionapi.metmuseum.org/public/collection/v1";
+const subs = ["images/sub1.jpg", "images/sub2.jpg", "images/sub3.jpg"];
+const frames = [
+    {
+        file: "images/frame1.png",
+        dimension: [1292,1734],
+        picture_dimension: [883,1292],
+        picture_offset: [200,216],
+    },
+    {
+        file: "images/frame2.png",
+        dimension: [1666,2409],
+        picture_dimension: [1336,2038],
+        picture_offset: [169,175], 
+    },
+    {
+        file: "images/frame3.png",
+        dimension: [2031,2396],
+        picture_dimension: [1609,1993],
+        picture_offset: [203,195],
+    }
+];
+
+const departments = [
+    {
+      "departmentId": 1,
+      "displayName": "American Decorative Arts"
+    },
+    {
+      "departmentId": 6,
+      "displayName": "Asian Art"
+    },
+    {
+      "departmentId": 7,
+      "displayName": "The Cloisters"
+    },
+    {
+      "departmentId": 9,
+      "displayName": "Drawings and Prints"
+    },
+    {
+      "departmentId": 11,
+      "displayName": "European Paintings"
+    },
+    {
+      "departmentId": 15,
+      "displayName": "The Robert Lehman Collection"
+    },
+];
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", async (req, res) => {
     try {
-        const response = await axios.get(API_URL + "/departments");
-        console.log(response.data.departments);
         res.render("index.ejs", {
-            categories: response.data.departments
+            categories: departments
         });        
     }
     catch(error) {
@@ -23,26 +69,36 @@ app.get("/", async (req, res) => {
 
 app.get("/arts", async (req, res) => {
     let search = [];
-    if (req.query.departmentId > 0) {
-        search.push("departmentId=" + req.query.departmentId)
+    if (req.query.department > 0) {
+        search.push("departmentId=" + req.query.department);
     }
-    search.push("q=" + req.query.searchTerm)
-    search.push("hasImages=true")
+    search.push("q=" + req.query.search);
+    search.push("hasImages=true");
     let suffix = "/search?" + search.join("&");
-
+    console.log(suffix);
     try {
         const response = await axios.get(API_URL + suffix);
-        let objectId = 0;
+        let imageSrc = "";
         if (response.data.objectIDs)
         {
             let objectIds = response.data.objectIDs;
-            objectId = objectIds[Math.floor(Math.random() * objectIds.length)];
+            let objectId = objectIds[Math.floor(Math.random() * objectIds.length)];
             const objResponse = await axios.get(API_URL + "/objects/" + objectId);
-            console.log(objResponse.data.primaryImage)
-            res.render("index.ejs", {
-                imageURL: objResponse.data.primaryImage
-            });
+            // console.log(objResponse.data.primaryImage)
+            //imageSrc = objResponse.data.primaryImage;
+            imageSrc = objResponse.data.primaryImageSmall;
         }
+        
+        if (!imageSrc) {
+            //get substitute image
+            imageSrc = subs[Math.floor(Math.random() * subs.length)];
+        }
+        let frame = frames[Math.floor(Math.random() * frames.length)];
+
+        res.render("index.ejs", {
+            imageSrc: imageSrc,
+            frame: frame,
+        });
     }
     catch(error) {
         res.status(404).send(error.message);
