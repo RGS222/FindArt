@@ -81,9 +81,10 @@ app.get("/arts", async (req, res) => {
     search.push("hasImages=true");
     let suffix = "/search?" + search.join("&");
     // console.log(suffix);
+    let imageSrc = "";
     try {
         const response = await axios.get(API_URL + suffix);
-        let imageSrc = "";
+
         if (response.data.objectIDs)
         {
             let objectIds = response.data.objectIDs;
@@ -91,27 +92,28 @@ app.get("/arts", async (req, res) => {
             const objResponse = await axios.get(API_URL + "/objects/" + objectId);
             imageSrc = objResponse.data.primaryImageSmall;
         }
-        
-        if (!imageSrc) {
-            //get substitute image
-            imageSrc = subs[Math.floor(Math.random() * subs.length)];
-        }
-        let frame = frames[Math.floor(Math.random() * frames.length)];
-
-        selectedCategory = req.query.department;
-        previousSearch = req.query.search;
-
-        res.render("index.ejs", {
-            categories: departments,
-            selectedCategory: selectedCategory,
-            previousSearch: previousSearch,
-            imageSrc: imageSrc,
-            frame: frame,
-        });
     }
     catch(error) {
         res.status(404).send(error.message);
     }
+
+    if (!imageSrc) {
+        //get substitute image
+        imageSrc = subs[Math.floor(Math.random() * subs.length)];
+    }
+    let frame = frames[Math.floor(Math.random() * frames.length)];
+
+    selectedCategory = req.query.department;
+    previousSearch = req.query.search;
+
+    res.render("index.ejs", {
+        categories: departments,
+        selectedCategory: selectedCategory,
+        previousSearch: previousSearch,
+        imageSrc: imageSrc,
+        frame: frame,
+    });
+
 });
 
 app.listen(port, () => {

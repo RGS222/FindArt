@@ -14,15 +14,14 @@
 <section id="main">
 
     <%- include("partials/input.ejs") %>
-    <% if (locals.imageSrc) { %>
-        <%- include("partials/display.ejs") %>
-    <% } %>
+    <%- include("partials/display.ejs") %>
 
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
+
 
 
 <script>
@@ -32,15 +31,19 @@
         const infoDetails = document.querySelector("#display .info-details");
 
         if (this.checked) {
-            displayArea.classList.remove("visible")
-            displayArea.classList.add("hidden");
+            if (displayArea !== null) {
+                displayArea.classList.remove("visible")
+                displayArea.classList.add("hidden");
+            }
             infoDetails.classList.remove("hidden")
             infoDetails.classList.add("visible");
         } else {
             infoDetails.classList.remove("visible")
             infoDetails.classList.add("hidden");
-            displayArea.classList.remove("hidden")
-            displayArea.classList.add("visible");
+            if (displayArea !== null) {
+                displayArea.classList.remove("hidden")
+                displayArea.classList.add("visible");
+            }
         }
     });
 </script>

@@ -1,6 +1,6 @@
 <section id="display">
 
-    <% if (locals.imageSrc) { %>
+    <% if (locals.imageSrc && locals.frame) { %>
     <div class="display-details visible">
         <div class="display-area">
             <img class="frame" src="<%= frame.file %>" alt="frame" />
@@ -25,7 +25,7 @@
             <p>
                 The Metropolitan Museum of Art is an encyclopedic art museum, currently fourth largest
                 in the world with over 5 million visits every year.  It has a collection of over 1.5 million
-                art pieces from a wide range of categories.  I personally has an opportunity to visit
+                art pieces from a wide range of categories.  I personally had an opportunity to visit
                 New York in 2023, but missed out the Metropolitan Museum of Art.  I hope others, after
                 seeing some of their collections, would eagerly plan their visit there.
             </p>
@@ -40,6 +40,7 @@
     </div>
 </section>
 
+<% if (locals.imageSrc && locals.frame) { %>
 <script>
     //framing the artwork
     const checkExist = setInterval(() => {
@@ -49,7 +50,6 @@
             clearInterval(checkExist);
             let aspectRatio = aw.width / aw.height;
             const fr = document.getElementsByClassName("frame")[0];
-
             const jString = '<%- JSON.stringify(frame) %>';
             const myframe = JSON.parse(jString);
             
@@ -72,3 +72,4 @@
     }, 20);
 
 </script>
+<% } %>
