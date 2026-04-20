@@ -6,18 +6,27 @@
             <label for="department">Category: </label>
             <select name="department" id="department">
                 <% for (let i = 0; i < categories.length; i++) { %>
-                <option value="<%= categories[i].departmentId %>"><%= categories[i].displayName %></option>
+                <option value="<%= categories[i].departmentId %>" 
+                        <%= (locals.selectedCategory && categories[i].departmentId==selectedCategory)? "selected" : "" %> >
+                    <%= categories[i].displayName %>
+                </option>
                 <% } %>
             </select>
 
             <label for="search">Search: </label>
             <input id="search" name="search" 
                 placeholder="Any"
-                value="" />
+                value="<%= (locals.previousSearch)? previousSearch : '' %>"
+            />
 
-            <button type="submit" class="btn btn-warning">
+            <button type="submit" class="btn btn-dark">
                 Show
             </button>
         </div>
     </form>
+
+    <div class="info-btn">
+        <input type="checkbox" class="btn-check" id="btn-check-2-outlined" unchecked autocomplete="off">
+        <label class="btn btn-outline-secondary" for="btn-check-2-outlined">i</label>
+    </div>
 </section>

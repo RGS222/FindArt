@@ -1,11 +1,129 @@
 body {
-    background-image: url('images/background.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    /* Centers the image */
-    background-size: auto 100%;
-    /* match height crop width */
+    background-image: url('../images/background.png');
+    background-repeat: repeat-y;
+    /* background-size: cover; */
+    background-size: 100vw 100vh;
     margin: 0;
     padding: 40px;
     width: 100vw;
+}
+
+#input {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    /* Ensures it fills the container */
+}
+#input .form label {
+    color: white;
+}
+
+#department, #search {
+    margin-right: 20px;
+}
+
+#input .form .btn {
+    border-color: white;
+}
+
+#input .info-btn .btn {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    font-size: large;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+#display {
+    position:relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40px;
+}
+
+#display .display-details {
+    width: 100vw;
+}
+
+#display .display-area {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+#display .frame {
+    z-index: -1;
+    position: relative;
+    max-width: 50vw;
+    max-height: 70vh;
+
+}
+
+#display .artwork {
+    position: absolute;
+    /* z-index: 1; */
+
+}
+
+#display .info-area {
+    position:absolute;
+    top: 20px;
+    left: 27vw;
+    width: clamp(400px,40vw,1000px);
+    color: white;
+    border: 2px white solid;
+    border-radius: 2%;
+    padding: 20px;
+    /* z-index: 2; */
+}
+
+#display .info-area p{
+    font-size: clamp(1rem,1.3vw,2.2rem);
+}
+
+.visible,
+.hidden {
+    overflow: hidden;
+    /* This container should not have padding, borders, etc. */
+}
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 1s linear;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
+}
+
+.hidden>div {
+    margin-top: -10000px;
+    transition: margin-top 0s 2s;
+}
+
+@media (max-width: 800px) {
+    #input .form-elements{
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: flex-start;
+    }
+
+    #department, #search {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    #input .btn {
+        margin-left: 0;
+    }
+
+    #display .info-area {
+        left: 0;
+        width: 80vw;
+    }
 }

@@ -1,10 +1,74 @@
 <section id="display">
 
-
-    <div class="display-area">
-        
-        <img src="<%= imageSrc %>" alt="picture" />
+    <% if (locals.imageSrc) { %>
+    <div class="display-details visible">
+        <div class="display-area">
+            <img class="frame" src="<%= frame.file %>" alt="frame" />
+            <img class="artwork" src="<%= imageSrc %>" alt="picture" />
+        </div>
     </div>
-
-
+    <% } %>
+    <div class="info-details hidden">
+        <div class="info-area">
+            <h1>
+                About the Web Site
+            </h1>
+            <p>
+                Everyone loves arts.  Arts provide people emotional, cognitive and therapeutic support.
+                They can reduce stress, improve mood, and foster creativity.  I want to display some
+                wonderful art pieces from the Metropolitan Museum of Art, New York, to allow the public
+                to have a taste of the collections there.
+            </p>
+            <h1>
+                Why the Metropolitan Museum of Art?
+            </h1>
+            <p>
+                The Metropolitan Museum of Art is an encyclopedic art museum, currently fourth largest
+                in the world with over 5 million visits every year.  It has a collection of over 1.5 million
+                art pieces from a wide range of categories.  I personally has an opportunity to visit
+                New York in 2023, but missed out the Metropolitan Museum of Art.  I hope others, after
+                seeing some of their collections, would eagerly plan their visit there.
+            </p>
+            <h1>
+                Recognition
+            </h1>
+            <p>
+                I am grateful to the Metropolitan Museum of Art for allowing the general public access to 
+                their open access datasets through their API.
+            </p>
+        </div>
+    </div>
 </section>
+
+<script>
+    //framing the artwork
+    const checkExist = setInterval(() => {
+        const aw = document.getElementsByClassName("artwork")[0];
+        if (aw.height > 0) {
+            //guarantee loading of artwork element
+            clearInterval(checkExist);
+            let aspectRatio = aw.width / aw.height;
+            const fr = document.getElementsByClassName("frame")[0];
+
+            const jString = '<%- JSON.stringify(frame) %>';
+            const myframe = JSON.parse(jString);
+            
+            let scaleX = fr.width / myframe.dimension[0];
+            let scaleY = fr.height / myframe.dimension[1];
+
+            if (aspectRatio > 1) {
+                //landscape
+                aw.style.height = Math.floor(myframe.picture_dimension[0] * scaleX + 0.5) + "px";
+                aw.style.width = Math.floor(myframe.picture_dimension[1] * scaleY + 0.5) + "px";
+                fr.style.transform = "rotate(90deg)"; //clockwise
+            } else {
+                //portrait
+                aw.style.height = Math.floor(myframe.picture_dimension[1] * scaleY + 0.5) + "px";
+                aw.style.width = Math.floor(myframe.picture_dimension[0] * scaleX + 0.5) + "px";
+            }
+            // aw.style.left = Math.floor((fr.width - aw.width) * 0.5 - 1) + "px";
+            aw.style.top = Math.floor((fr.height - aw.height) * 0.5 + 1) + "px";
+        }
+    }, 20);
+
+</script>

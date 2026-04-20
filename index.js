@@ -10,19 +10,19 @@ const frames = [
         file: "images/frame1.png",
         dimension: [1292,1734],
         picture_dimension: [883,1292],
-        picture_offset: [200,216],
+        picture_offset: [200,220],
     },
     {
         file: "images/frame2.png",
         dimension: [1666,2409],
         picture_dimension: [1336,2038],
-        picture_offset: [169,175], 
+        picture_offset: [169,179], 
     },
     {
         file: "images/frame3.png",
         dimension: [2031,2396],
         picture_dimension: [1609,1993],
-        picture_offset: [203,195],
+        picture_offset: [203,199],
     }
 ];
 
@@ -53,13 +53,18 @@ const departments = [
     },
 ];
 
+let selectedCategory = 1;
+let previousSearch = "";
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", async (req, res) => {
     try {
         res.render("index.ejs", {
-            categories: departments
+            categories: departments,
+            selectedCategory: selectedCategory,
+            previousSearch: previousSearch,
         });        
     }
     catch(error) {
@@ -75,7 +80,7 @@ app.get("/arts", async (req, res) => {
     search.push("q=" + req.query.search);
     search.push("hasImages=true");
     let suffix = "/search?" + search.join("&");
-    console.log(suffix);
+    // console.log(suffix);
     try {
         const response = await axios.get(API_URL + suffix);
         let imageSrc = "";
@@ -84,8 +89,6 @@ app.get("/arts", async (req, res) => {
             let objectIds = response.data.objectIDs;
             let objectId = objectIds[Math.floor(Math.random() * objectIds.length)];
             const objResponse = await axios.get(API_URL + "/objects/" + objectId);
-            // console.log(objResponse.data.primaryImage)
-            //imageSrc = objResponse.data.primaryImage;
             imageSrc = objResponse.data.primaryImageSmall;
         }
         
@@ -95,7 +98,13 @@ app.get("/arts", async (req, res) => {
         }
         let frame = frames[Math.floor(Math.random() * frames.length)];
 
+        selectedCategory = req.query.department;
+        previousSearch = req.query.search;
+
         res.render("index.ejs", {
+            categories: departments,
+            selectedCategory: selectedCategory,
+            previousSearch: previousSearch,
             imageSrc: imageSrc,
             frame: frame,
         });
