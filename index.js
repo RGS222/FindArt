@@ -83,13 +83,14 @@ app.get("/arts", async (req, res) => {
         if (response.data.objectIDs)
         {
             let objectIds = response.data.objectIDs;
+            // console.log(objectIds.length);
             let objectId = objectIds[Math.floor(Math.random() * objectIds.length)];
             const objResponse = await axios.get(API_URL + "/objects/" + objectId);
             imageSrc = objResponse.data.primaryImageSmall;
         }
     }
     catch(error) {
-        res.status(404).send(error.message);
+        //ignore, get the sub
     }
 
     if (!imageSrc) {

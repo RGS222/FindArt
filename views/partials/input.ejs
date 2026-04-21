@@ -34,9 +34,11 @@
 <% if (locals.imageSrc && locals.frame) { %>
 <script>
     //get past values
-    const dropdown = document.getElementById("department");
+    let dropdown = document.getElementById("department");
     const selectedCategory = localStorage.getItem("selectedCategory");
-    dropdown.value = selectedCategory;
+    console.log("selectedCategory="+ selectedCategory);
+    dropdown.selectedIndex = [...dropdown.options].findIndex(x => x.text===selectedCategory);
+    console.log("dropdown.value="+ dropdown.value);
 
     const input = document.getElementById("search");
     const previousSearch = localStorage.getItem("previousSearch");
@@ -46,6 +48,7 @@
 <script>
     //reset
     const dropdown = document.getElementById("department");
+    // console.log(dropdown.options[0].text);
     localStorage.setItem("selectedCategory", dropdown.options[0].text);
     localStorage.setItem("previousSearch", "");
 </script>
@@ -53,9 +56,8 @@
 
 <script>
     dropdown.addEventListener('change', function (event) {
-        const displayName = event.target.value;
-        console.log(displayName);
-        localStorage.setItem("selectedCategory", displayName);
+        const selectedIndex = event.target.selectedIndex;
+        localStorage.setItem("selectedCategory", this.options[selectedIndex].text);
     });
 
     const btnClick = document.querySelector("#input .form .btn");
