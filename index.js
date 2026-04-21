@@ -53,9 +53,6 @@ const departments = [
     },
 ];
 
-let selectedCategory = 1;
-let previousSearch = "";
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
@@ -63,8 +60,6 @@ app.get("/", async (req, res) => {
     try {
         res.render("index.ejs", {
             categories: departments,
-            selectedCategory: selectedCategory,
-            previousSearch: previousSearch,
         });        
     }
     catch(error) {
@@ -103,13 +98,8 @@ app.get("/arts", async (req, res) => {
     }
     let frame = frames[Math.floor(Math.random() * frames.length)];
 
-    selectedCategory = req.query.department;
-    previousSearch = req.query.search;
-
     res.render("index.ejs", {
         categories: departments,
-        selectedCategory: selectedCategory,
-        previousSearch: previousSearch,
         imageSrc: imageSrc,
         frame: frame,
     });

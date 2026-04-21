@@ -6,8 +6,7 @@
             <label for="department">Category: </label>
             <select name="department" id="department">
                 <% for (let i = 0; i < categories.length; i++) { %>
-                <option value="<%= categories[i].departmentId %>" 
-                        <%= (locals.selectedCategory && categories[i].departmentId==selectedCategory)? "selected" : "" %> >
+                <option value="<%= categories[i].departmentId %>" <%= (i===0)? "selected" : "" %> >
                     <%= categories[i].displayName %>
                 </option>
                 <% } %>
@@ -16,7 +15,7 @@
             <label for="search">Search: </label>
             <input id="search" name="search" 
                 placeholder="Any"
-                value="<%= (locals.previousSearch)? previousSearch : '' %>"
+                value=""
             />
 
             <button type="submit" class="btn btn-dark">
@@ -30,3 +29,41 @@
         <label class="btn btn-outline-secondary" for="btn-check-2-outlined">i</label>
     </div>
 </section>
+
+
+<% if (locals.imageSrc && locals.frame) { %>
+<script>
+    //get past values
+    const dropdown = document.getElementById("department");
+    const selectedCategory = localStorage.getItem("selectedCategory");
+    dropdown.value = selectedCategory;
+
+    const input = document.getElementById("search");
+    const previousSearch = localStorage.getItem("previousSearch");
+    input.value = previousSearch;
+</script>
+<% } else { %>
+<script>
+    //reset
+    const dropdown = document.getElementById("department");
+    localStorage.setItem("selectedCategory", dropdown.options[0].text);
+    localStorage.setItem("previousSearch", "");
+</script>
+<% } %>
+
+<script>
+    dropdown.addEventListener('change', function (event) {
+        const displayName = event.target.value;
+        console.log(displayName);
+        localStorage.setItem("selectedCategory", displayName);
+    });
+
+    const btnClick = document.querySelector("#input .form .btn");
+    btnClick.addEventListener('click', function (event) {
+        const input = document.getElementById("search");
+        const search = input.value;
+        console.log(search);
+        localStorage.setItem("previousSearch", search);
+    })
+
+</script>
